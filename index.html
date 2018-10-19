@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Giftastic</title>
+</head>
+<body>
+    <body background="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSEll0-crWQMgWIUzy2desPqQq3AZaGMnCXaDioSIIu1n29aRVocQ">
+    <div class="container">
+        <h1>TV Show Gifs</h1>
+  
+        <div id="buttons-view"></div>
+    
+        <form id="tvshow-form">
+          <br>
+          <input type="text" id="tvshow-input">
+          <br>
+    
+          <input id="add-tvshow" type="submit" value="Add a tv show!">
+        </form>
+  
+        <div id="tvshow-view"></div>
+    
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script type="text/javascript">
+          var tvShows = ["How I Met Your Mother", "Vampire Diaries", "Gilmore Girls", "Two Broke Girls"];
+          // displayTvShowInfo function re-renders the HTML to display the appropriate content
+          function displayTvShowInfo() {
+            var tvshow = $(this).attr("data-name");
+            var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + tvshow + "&api_key=dc6zaTOxFJmzC&limit=10";
+            // Creating an AJAX call for the specific tv show button being clicked
+            $.ajax({
+              url: queryURL,
+              method: "GET"
+            }).then(function(response) {
+              console.log(queryURL);
+          console.log(response);
+          // storing the data from the AJAX request in the results variable
+          var results = response.data;
+          // Looping through each result item
+          for (var i = 0; i < results.length; i++) {
+            // Creating and storing a div tag
+            var tvshowDiv = $("<div>");
+            // Creating a paragraph tag with the result item's rating
+            var p = $("<p>").text("Rating: " + results[i].rating);
+            // Creating and storing an image tag
+            var tvshowImage = $("<img>");
+            // Setting the src attribute of the image to a property pulled off the result item
+            tvshowImage.attr("src", results[i].images.fixed_height.url);
+            tvshowDiv.append(p);
+            tvshowDiv.append(tvshowImage);
+            // Prepending the tvshowDiv to the HTML page
+            $("#tvshow-view").prepend(tvshowDiv);
+          }
+            });
+          }
+          //This is taken from the 'Pausing-gifs' exercise. I wasn't sure how to incorporate this to the image src's since they are not direct links like in the activities.
+          $("<img>").on("click", function() {
+      // The attr jQuery method allows us to get or set the value of any attribute on our HTML element
+var state = $(this).attr("data-state");
+      if (state === "still") {
+        $(this).attr("src", "animate");
+        $(this).attr("data-state", "animate");
+      } else {
+        $(this).attr("src", "still");
+        $(this).attr("data-state", "still");
+      }
+    });
+          // Function for displaying tv show data
+          function renderButtons() {
+            // Deleting the tv shows prior to adding new tv shows
+            $("#buttons-view").empty();
+            // Looping through the array of tv shows
+            for (var i = 0; i < tvShows.length; i++) {
+              // Then dynamicaly generating buttons for each tv show in the array
+              // This code $("<button>") is all jQuery needs to create the beginning and end tag. (<button></button>)
+              var a = $("<button>");
+              // Adding a class of tvshow-btn to our button
+              a.addClass("tvshow-btn");
+              // Adding a data-attribute
+              a.attr("data-name", tvShows[i]);
+              // Providing the initial button text
+              a.text(tvShows[i]);
+              // Adding the button to the buttons-view div
+              $("#buttons-view").append(a);
+            }
+          }
+          // This function handles events where a tv shpw button is clicked
+          $("#add-tvshow").on("click", function(event) {
+            event.preventDefault();
+            // This line grabs the input from the textbox
+            var tvshow = $("#tvshow-input").val().trim();
+            // Adding tv show from the textbox to our array
+            tvShows.push(tvshow);
+            // Calling renderButtons which handles the processing of our tvshow array
+            renderButtons();
+          });
+          // Adding a click event listener to all elements with a class of "tvshow-btn"
+          $(document).on("click", ".tvshow-btn", displayTvShowInfo);
+          // Calling the renderButtons function to display the intial buttons
+          renderButtons();
+        </script>
+      </div>
+</body>
+</html>
