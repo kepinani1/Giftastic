@@ -1,19 +1,8 @@
-#buttons-view{
-    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
-    margin-top: 40px;
-    padding-left: 700px;
-    padding-right: 200px;
+h1{
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 60px;
 }
-img src{
-    float:left;
+div{
+    float: left;
+    margin-left: 10px;
 }
-/* #tvshow-view,div {
-    display: -ms-grid; 
-    display: grid;
-  
-    -ms-grid-columns: 1fr 1fr 1fr 1fr;           
-    grid-template-columns: repeat(4, 1fr);
-  
-    -ms-grid-gap: 1vw;
-    grid-gap: 1vw;
-} */
